@@ -1,7 +1,7 @@
 {
     "slackChannelId": "09077ca8-424d-44dd-80db-4ff64ddd1f05",
     "name": "Test用Slackチャンネル1",
-    "webhookUrl": "https://hooks.slack.com/services/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",
+    "webhookUrl": "https://hooks.slack.com/",
     "registeredBy": "minoura_a",
-    "endpointUrl": "https://notify-slack-of-web-meetings-minoura.azurewebsites.net/api/"
+    "endpointUrl": "https://"
 }
