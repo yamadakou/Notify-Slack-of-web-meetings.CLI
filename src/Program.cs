@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CommandLine;
 using Newtonsoft.Json;
 using Notify_Slack_of_web_meetings.CLI.Settings;
+using Notify_Slack_of_web_meetings.CLI.SlackChannels;
 using Notify_Slack_of_web_meetings.CLI.WebMeetings;
 using Outlook = Microsoft.Office.Interop.Outlook;
 
@@ -51,8 +52,52 @@ namespace Notify_Slack_of_web_meetings.CLI
             {
                 Console.WriteLine("Run Setting");
 
+                #region 引数の値でSlackチャンネル情報を登録
+
+                var addSlackChannel = new SlackChannel()
+                {
+	                Name = opts.Name,
+	                WebhookUrl = opts.WebhookUrl,
+	                RegisteredBy = opts.RegisteredBy
+                };
+                var endPointUrl = $"{opts.EndpointUrl}SlackChannels";
+                var postData = JsonConvert.SerializeObject(addSlackChannel);
+                var postContent = new StringContent(postData, Encoding.UTF8, "application/json");
+                var response = s_HttpClient.PostAsync(endPointUrl, postContent).Result;
+                var addSlackChannelString = response.Content.ReadAsStringAsync().Result;
+
+                // Getしたコンテンツはメッセージ+Jsonコンテンツなので、Jsonコンテンツだけ無理やり取り出す
+                var addSlackChannels = JsonConvert.DeserializeObject<SlackChannel>(addSlackChannelString.Substring(52));
+
+                #endregion
+
+                #region 登録したSlackチャンネル情報のIDと引数のWeb会議情報通知サービスのエンドポイントURLをsetting.jsonに保存
+
+                var setting = new Setting()
+                {
+	                SlackChannelId = addSlackChannels.Id,
+	                Name = addSlackChannel.Name,
+	                RegisteredBy = addSlackChannel.RegisteredBy,
+	                EndpointUrl = opts.EndpointUrl
+                };
+
+                // jsonに設定を出力
+                var settingJsonString = JsonConvert.SerializeObject(setting);
+                if (File.Exists(opts.Filepath))
+                {
+	                File.Delete(opts.Filepath);
+                }
+
+                using (var fs = File.CreateText(opts.Filepath))
+                {
+	                fs.WriteLine(settingJsonString);
+                }
+
+                #endregion
+
                 return 1;
             };
+
             Func<RegisterOptions, int> RunRegisterAndReturnExitCode = opts =>
             {
                 Console.WriteLine("Run Register");
@@ -68,9 +113,9 @@ namespace Notify_Slack_of_web_meetings.CLI
                             Outlook.OlDefaultFolders.olFolderCalendar)
                         as Outlook.Folder;
 
-                DateTime start = DateTime.Today.AddDays(1);
-                DateTime end = start.AddDays(1);
-                Outlook.Items nextOperatingDayAppointments = GetAppointmentsInRange(calFolder, start, end);
+                DateTime startDate = DateTime.Today.AddDays(1);
+                DateTime endDate = startDate.AddDays(1);
+                Outlook.Items nextOperatingDayAppointments = GetAppointmentsInRange(calFolder, startDate, endDate);
 
                 #endregion
 
@@ -95,7 +140,7 @@ namespace Notify_Slack_of_web_meetings.CLI
                 #region 引数のパスに存在するsetting.jsonに設定されているSlackチャンネル情報のIDと抽出した予定を使い、Web会議情報を作成
 
                 // jsonファイルから設定を取り出す
-                var fileContent = string.Empty;
+                string fileContent;
                 using (var sr = new StreamReader(opts.Filepath, Encoding.GetEncoding("utf-8")))
                 {
                     fileContent = sr.ReadToEnd();
@@ -125,19 +170,30 @@ namespace Notify_Slack_of_web_meetings.CLI
 
                 #region 引数のパスに存在するsetting.jsonに設定されているエンドポイントURLを使い、Web会議情報を削除
 
+                var endPointUrl = $"{setting.EndpointUrl}WebMeetings";
+                var getEndPointUrl = $"{endPointUrl}?fromDate={startDate}&toDate={endDate}";
+                var getWebMeetingsResult = s_HttpClient.GetAsync(getEndPointUrl).Result;
+                var getWebMeetingsString = getWebMeetingsResult.Content.ReadAsStringAsync().Result;
+                
+                // Getしたコンテンツはメッセージ+Jsonコンテンツなので、Jsonコンテンツだけ無理やり取り出す
+                var getWebMeetings = JsonConvert.DeserializeObject<List<WebMeeting>>(getWebMeetingsString.Substring(52));
 
+                foreach (var getWebMeeting in getWebMeetings)
+                {
+	                var deleteEndPointUrl = $"{endPointUrl}/{getWebMeeting.Id}";
+	                s_HttpClient.DeleteAsync(deleteEndPointUrl).Wait();
+                }
 
                 #endregion
 
                 #region 引数のパスに存在するsetting.jsonに設定されているエンドポイントURLを使い、Web会議情報を登録
 
-                var postUrl = $"{setting.EndpointUrl}WebMeetings";
-
                 // Web会議情報を登録
-                foreach (var webMeeting in addWebMeetings)
+                foreach (var addWebMeeting in addWebMeetings)
                 {
-                    var postData = JsonConvert.SerializeObject(webMeeting);
-                    var content = new StringContent(postData, Encoding.UTF8, "application/json");
+	                var postData = JsonConvert.SerializeObject(addWebMeeting);
+	                var postContent = new StringContent(postData, Encoding.UTF8, "application/json");
+	                var response = s_HttpClient.PostAsync(endPointUrl, postContent).Result;
                 }
 
                 #endregion
