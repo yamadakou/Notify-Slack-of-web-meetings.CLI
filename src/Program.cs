@@ -67,7 +67,7 @@ namespace Notify_Slack_of_web_meetings.CLI
                 var addSlackChannelString = response.Content.ReadAsStringAsync().Result;
 
                 // Getしたコンテンツはメッセージ+Jsonコンテンツなので、Jsonコンテンツだけ無理やり取り出す
-                var addSlackChannels = JsonConvert.DeserializeObject<SlackChannel>(addSlackChannelString.Substring(52));
+                var addSlackChannels = JsonConvert.DeserializeObject<SlackChannel>(addSlackChannelString);
 
                 #endregion
 
@@ -176,7 +176,7 @@ namespace Notify_Slack_of_web_meetings.CLI
                 var getWebMeetingsString = getWebMeetingsResult.Content.ReadAsStringAsync().Result;
                 
                 // Getしたコンテンツはメッセージ+Jsonコンテンツなので、Jsonコンテンツだけ無理やり取り出す
-                var getWebMeetings = JsonConvert.DeserializeObject<List<WebMeeting>>(getWebMeetingsString.Substring(52));
+                var getWebMeetings = JsonConvert.DeserializeObject<List<WebMeeting>>(getWebMeetingsString);
 
                 foreach (var getWebMeeting in getWebMeetings)
                 {
