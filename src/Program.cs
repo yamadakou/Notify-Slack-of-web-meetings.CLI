@@ -124,7 +124,7 @@ namespace Notify_Slack_of_web_meetings.CLI
                 var webMeetingAppointments = new List<Outlook.AppointmentItem>();
 
                 // ZoomURLを特定するための正規表現
-                var zoomUrlRegexp = @"https?://[^(?!.*(/|.|\n).*$)]*\.?zoom\.us/[A-Za-z0-9/?=]+";
+                var zoomUrlRegexp = @"https?://(jpn01.safelinks.protection.outlook.com/.*url=https.*)?[^(?!.*(/|.|\n).*$)]*\.?zoom\.us[A-Za-z0-9/?=%&;\.]+";
 
                 foreach (Outlook.AppointmentItem nextOperatingDayAppointment in nextOperatingDayAppointments)
                 {
