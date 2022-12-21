@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommandLine;
+using Microsoft.Identity.Client;
+using Microsoft.Identity.Web;
 using Newtonsoft.Json;
+using Notify_Slack_of_web_meetings.CLI.Authentication;
 using Notify_Slack_of_web_meetings.CLI.Settings;
 using Notify_Slack_of_web_meetings.CLI.SlackChannels;
 using Notify_Slack_of_web_meetings.CLI.WebMeetings;
@@ -165,6 +170,34 @@ namespace Notify_Slack_of_web_meetings.CLI
                     };
                     addWebMeetings.Add(addWebMeeting);
                 }
+
+                #endregion
+
+                #region Functionの認証のためのトークン取得
+
+                AuthenticationConfig config = AuthenticationConfig.ReadFromJsonFile("appsettings.json");
+
+                IConfidentialClientApplication app;
+                app = ConfidentialClientApplicationBuilder.Create(config.ClientId)
+	                .WithClientSecret(config.ClientSecret)
+	                .WithAuthority(new Uri(config.Authority))
+	                .Build();
+
+                app.AddInMemoryTokenCache();
+
+                string[] scopes = new string[] {$"{config.ApiUrl}.default"};
+
+                AuthenticationResult result = null;
+                result = app.AcquireTokenForClient(scopes)
+	                .ExecuteAsync().Result;
+
+                var accessToken = result.AccessToken;
+                var defaultRequestHeaders = s_HttpClient.DefaultRequestHeaders;
+                if (defaultRequestHeaders.Accept == null || !defaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json"))
+                {
+	                s_HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                }
+                defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                 #endregion
 
