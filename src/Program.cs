@@ -177,26 +177,21 @@ namespace Notify_Slack_of_web_meetings.CLI
 
                 AuthenticationConfig config = AuthenticationConfig.ReadFromJsonFile("appsettings.json");
 
-                IConfidentialClientApplication app;
-                app = ConfidentialClientApplicationBuilder.Create(config.ClientId)
+                var app = ConfidentialClientApplicationBuilder.Create(config.ClientId)
 	                .WithClientSecret(config.ClientSecret)
 	                .WithAuthority(new Uri(config.Authority))
 	                .Build();
 
                 app.AddInMemoryTokenCache();
 
-                string[] scopes = new string[] {$"{config.ApiUrl}.default"};
+                string[] scopes = new string[] { $"{config.ApiUrl}.default" };
 
                 AuthenticationResult result = null;
                 result = app.AcquireTokenForClient(scopes)
-	                .ExecuteAsync().Result;
+                    .ExecuteAsync().Result;
 
                 var accessToken = result.AccessToken;
                 var defaultRequestHeaders = s_HttpClient.DefaultRequestHeaders;
-                if (defaultRequestHeaders.Accept == null || !defaultRequestHeaders.Accept.Any(m => m.MediaType == "application/json"))
-                {
-	                s_HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                }
                 defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                 #endregion
@@ -211,11 +206,12 @@ namespace Notify_Slack_of_web_meetings.CLI
                 // Getしたコンテンツはメッセージ+Jsonコンテンツなので、Jsonコンテンツだけ無理やり取り出す
                 var getWebMeetings = JsonConvert.DeserializeObject<List<WebMeeting>>(getWebMeetingsString);
 
-                foreach (var getWebMeeting in getWebMeetings)
-                {
-	                var deleteEndPointUrl = $"{endPointUrl}/{getWebMeeting.Id}";
-	                s_HttpClient.DeleteAsync(deleteEndPointUrl).Wait();
-                }
+                if (getWebMeetings != null)
+	                foreach (var getWebMeeting in getWebMeetings)
+	                {
+		                var deleteEndPointUrl = $"{endPointUrl}/{getWebMeeting.Id}";
+		                s_HttpClient.DeleteAsync(deleteEndPointUrl).Wait();
+	                }
 
                 #endregion
 

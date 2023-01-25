@@ -1,6 +1,15 @@
 {
   "profiles": {
-    "Notify-Slack-of-web-meetings.CLI": {
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    },
+    "setting": {
+      "commandName": "Project",
+      "commandLineArgs": "setting\r\n-u https://notifyslack-minoura.azurewebsites.net/api/\r\n-n #times-minoura\r\n-w https://hooks.slack.com/services/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\r\n-r 箕浦"
+    },
+    "register": {
       "commandName": "Project",
       "commandLineArgs": "register"
     }
