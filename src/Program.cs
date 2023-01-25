@@ -57,6 +57,29 @@ namespace Notify_Slack_of_web_meetings.CLI
             {
                 Console.WriteLine("Run Setting");
 
+                #region Functionの認証のためのトークン取得
+
+                AuthenticationConfig config = AuthenticationConfig.ReadFromJsonFile("appsettings.json");
+
+                var app = ConfidentialClientApplicationBuilder.Create(config.ClientId)
+	                .WithClientSecret(config.ClientSecret)
+	                .WithAuthority(new Uri(config.Authority))
+	                .Build();
+
+                app.AddInMemoryTokenCache();
+
+                string[] scopes = new string[] { $"{config.ApiUrl}.default" };
+
+                AuthenticationResult result = null;
+                result = app.AcquireTokenForClient(scopes)
+	                .ExecuteAsync().Result;
+
+                var accessToken = result.AccessToken;
+                var defaultRequestHeaders = s_HttpClient.DefaultRequestHeaders;
+                defaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                #endregion
+
                 #region 引数の値でSlackチャンネル情報を登録
 
                 var addSlackChannel = new SlackChannel()
