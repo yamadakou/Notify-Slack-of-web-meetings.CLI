@@ -89,11 +89,11 @@
       * https://atmarkit.itmedia.co.jp/ait/articles/1305/31/news049.html
 
 ## ビルド環境
-Visual Studio 2019 バージョン 16.9.2 以降
-
+Visual Studio 2022 バージョン 17.1 以降
+* .NET デスクトップ開発ワークロードがインストールされている事
 ### 参考
   * チュートリアル: Visual Studio を使用して .NET コンソール アプリケーションを作成する
-    * https://docs.microsoft.com/ja-jp/dotnet/core/tutorials/with-visual-studio?pivots=dotnet-5-0
+    * https://docs.microsoft.com/ja-jp/dotnet/core/tutorials/with-visual-studio?pivots=dotnet-6-0
 
 ### ビルドと発行
 1. `gir clone ・・・` などでローカルに取得し、 Visual Studio でソリューションを開く。
