@@ -76,7 +76,7 @@
            * 例：register -d 3 -f test-setting.json
        * 開始： `notify-slack-of-web-meeting.cli.exe` が存在するフォルダのパス
   2. タスクの構成を最新にする設定（オプション）
-      * 登録したタスクのプロパティを開く。
+      * 登録したタスクのプロパティを開く。iew=vs-2022
       * 全般タブの「構成」を「Windows 10」に変更する。
   3. ログオフ時も実行する設定（オプション）
       * 登録したタスクのプロパティを開く。
@@ -84,7 +84,7 @@
 
   * 参考
     * Schedule a Task
-      * https://docs.microsoft.com/ja-jp/previous-versions/windows/it-pro/windows-server-2008-r2-and-2008/cc748993(v=ws.11)
+      * https://learn.microsoft.com/ja-jp/previous-versions/windows/it-pro/windows-server-2008-r2-and-2008/cc748993(v=ws.11)
     * 【Windows 10対応】タスクスケジューラで定期的な作業を自動化する
       * https://atmarkit.itmedia.co.jp/ait/articles/1305/31/news049.html
 
@@ -93,24 +93,26 @@ Visual Studio 2022 バージョン 17.1 以降
 * .NET デスクトップ開発ワークロードがインストールされている事
 ### 参考
   * チュートリアル: Visual Studio を使用して .NET コンソール アプリケーションを作成する
-    * https://docs.microsoft.com/ja-jp/dotnet/core/tutorials/with-visual-studio?pivots=dotnet-6-0
+    * https://learn.microsoft.com/ja-jp/dotnet/core/tutorials/with-visual-studio?pivots=dotnet-6-0
 
 ### ビルドと発行
 1. `gir clone ・・・` などでローカルに取得し、 Visual Studio でソリューションを開く。
 2. ソリューションのリビルドを行う
    * 参考
      * Visual Studio でのプロジェクトとソリューションのビルドおよびクリーン
-       * https://docs.microsoft.com/ja-jp/visualstudio/ide/building-and-cleaning-projects-and-solutions-in-visual-studio?view=vs-2019
+       * https://learn.microsoft.com/ja-jp/visualstudio/ide/building-and-cleaning-projects-and-solutions-in-visual-studio?view=vs-2022
 3. コンソール アプリケーションを発行する。
    * 発行先の `publish` フォルダを実行用フォルダ（任意のフォルダ）にコピーする。
    * 参考
      * チュートリアル: Visual Studio を使用して .NET コンソール アプリケーションを発行する
-       * https://docs.microsoft.com/ja-jp/dotnet/core/tutorials/publishing-with-visual-studio?pivots=dotnet-5-0
+       * https://learn.microsoft.com/ja-jp/dotnet/core/tutorials/publishing-with-visual-studio?pivots=dotnet-6-0
   
 #### COM参照
 * Microsoft Outlook 16.0 Object Library
-  * https://docs.microsoft.com/ja-jp/visualstudio/vsto/office-primary-interop-assemblies?view=vs-2022#primary-interop-assemblies-for-microsoft-office-applications
+  * https://learn.microsoft.com/ja-jp/visualstudio/vsto/office-primary-interop-assemblies?view=vs-2022#primary-interop-assemblies-for-microsoft-office-applications
   * 参考
+    * 方法: 参照マネージャーを使用して参照を追加または削除する
+      * https://learn.microsoft.com/ja-jp/visualstudio/ide/how-to-add-or-remove-references-by-using-the-reference-manager?view=vs-2022
     * .NET 5プロジェクトでのCOM参照の追加
       * https://opcdiary.net/net-5%e3%83%97%e3%83%ad%e3%82%b8%e3%82%a7%e3%82%af%e3%83%88%e3%81%a7%e3%81%aecom%e5%8f%82%e7%85%a7%e3%81%ae%e8%bf%bd%e5%8a%a0/
 
@@ -118,17 +120,16 @@ Visual Studio 2022 バージョン 17.1 以降
 ※ `dotnet list package` の結果から作成
   |最上位レベル パッケージ|バージョン|Nuget|
   |:--|:--|:--|
-  |CommandLineParser                             |2.8.0 |https://www.nuget.org/packages/CommandLineParser/2.8.0|
-  |Microsoft.Extensions.Configuration.Json       |5.0.0 |https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/5.0.0|
-  |Microsoft.Extensions.DependencyInjection      |5.0.2 |https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/5.0.2|
-  |Microsoft.Extensions.Http                     |5.0.0 |https://www.nuget.org/packages/Microsoft.Extensions.Http/5.0.0|
-  |Microsoft.Extensions.Http.Polly               |5.0.1 |https://www.nuget.org/packages/Microsoft.Extensions.Http.Polly/5.0.1|
-  |Newtonsoft.Json                               |13.0.1|https://www.nuget.org/packages/Newtonsoft.Json/13.0.1|
-  |NLog.Extensions.Logging                       |1.7.4 |https://www.nuget.org/packages/NLog.Extensions.Logging/1.7.4|
+  |CommandLineParser                             |2.8.0   |https://www.nuget.org/packages/CommandLineParser/2.8.0|
+  |Microsoft.Extensions.Configuration.Binder     |7.0.0   |https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/7.0.0|
+  |Microsoft.Extensions.Configuration.Json       |7.0.0   |https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/7.0.0|
+  |Microsoft.Identity.Web.Certificate            |1.25.10 |https://www.nuget.org/packages/Microsoft.Identity.Web.Certificate/1.25.10|
+  |Microsoft.Identity.Web.TokenCache             |1.25.10 |https://www.nuget.org/packages/Microsoft.Identity.Web.TokenCache/1.25.10|
+  |Newtonsoft.Json                               |13.0.1  |https://www.nuget.org/packages/Newtonsoft.Json/13.0.1|
 
 
 ## （関連リポジトリ）
 * Notify-Slack-of-web-meetings
-  * https://github.com/yamadakou/Notify-Slack-of-web-meetingss
+  * https://github.com/yamadakou/Notify-Slack-of-web-meetings
 * Notify-Slack-of-web-meetings-Admin
   * https://github.com/yamadakou/Notify-Slack-of-web-meetings-Admin
