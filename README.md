@@ -53,6 +53,20 @@
   * 動作確認済み Outlook クライアント
     * Outlook 2016 (Windows 版)
     * Outlook for Microsoft 365 (Windows 版)
+*  Web サービス「[Notify Slack of web meeting](https://github.com/yamadakou/Notify-Slack-of-web-meetings)」にアクセスするための設定ファイル「appsettings.json」を本実行ファイルと同じパスに配置すること。
+    *  「appsettings.json」の書式は以下
+        ```
+        {
+          "Instance": "https://login.microsoftonline.com/{0}",
+          "Tenant": "{デーモンアプリのテナントID}",
+          "ClientId": "{デーモンアプリのクライアントID}",
+          "ClientSecret": "{デーモンアプリのシークレット}",
+          "ApiUrl": "{ファンクションアプリのアプリケーション ID の URI}/"
+        }
+        ```
+        * 各値の取得方法などは、「[Notify Slack of web meeting](https://github.com/yamadakou/Notify-Slack-of-web-meetings)」のページを参照
+* Slackの「Incoming Webhooks」を設定し、通知先のURLを取得する。
+  * 詳細は、Slackドキュメント「 [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)」参照
 
 ### 初期設定
 * [Setting コマンド](Settingコマンド) を実行する。
