@@ -64,7 +64,7 @@
           "ApiUrl": "{ファンクションアプリのアプリケーション ID の URI}/"
         }
         ```
-        * 各値の取得方法などは、「[Notify Slack of web meeting](https://github.com/yamadakou/Notify-Slack-of-web-meetings)」のページを参照
+        * 各値の取得方法などは、「[Notify Slack of web meeting](https://github.com/yamadakou/Notify-Slack-of-web-meetings)」の「10. スケジュール登録アプリを動作させるために必要な設定ファイルを作成」を参照
 * Slackの「Incoming Webhooks」を設定し、通知先のURLを取得する。
   * 詳細は、Slackドキュメント「 [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)」参照
 
