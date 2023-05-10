@@ -143,7 +143,7 @@ Visual Studio 2022 バージョン 17.1 以降
 
 
 ## （関連リポジトリ）
-* Notify-Slack-of-web-meetings
+* Notify Slack of web meetings
   * https://github.com/yamadakou/Notify-Slack-of-web-meetings
-* Notify-Slack-of-web-meetings-Admin
+* Notify Slack of web meetings Admin
   * https://github.com/yamadakou/Notify-Slack-of-web-meetings-Admin
