@@ -69,12 +69,24 @@
   * 詳細は、Slackドキュメント「 [Sending messages using Incoming Webhooks](https://api.slack.com/messaging/webhooks)」参照
 
 ### 初期設定
-* [Setting コマンド](Settingコマンド) を実行する。
-  * 詳細は [Setting コマンド](Settingコマンド) を参照
+* Setting コマンド を実行する。
+  * 詳細は Setting コマンド を参照
+
+* APIの認可情報を付与する
+  * コマンドの実行により生成されたsetting.jsonに手動で以下の認可キーを設定する
+  * 認可キーはAdminで生成する。詳細は[Admin](https://github.com/yamadakou/Notify-Slack-of-web-meetings-Admin)のリポジトリを参照。 
+  
+  ```
+  {
+    ...,
+    "authorizationKey":"{認可キー}"
+  }
+
+  ```
 
 ### Web会議情報を登録（手動実行）
-* [Register コマンド](Registerコマンド) を実行する。
-  * 詳細は [Register コマンド](Registerコマンド) を参照
+* Register コマンド を実行する。
+  * 詳細は Register コマンド を参照
 
 ### Windows タスクスケジューラに登録（自動実行）
 * Windows タスクスケジューラで Register コマンドを毎日実行するタスクを設定する。
